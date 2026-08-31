@@ -27,6 +27,7 @@ public class GarlandMapper {
                 .createdAt(garland.getCreatedAt())
                 .updatedAt(garland.getUpdatedAt())
                 .materials(garland.getMaterials())
+                .imageUrl(garland.getImage() != null ? garland.getImage().getImagePath() : null)
                 .build();
     }
 

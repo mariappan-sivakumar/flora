@@ -23,6 +23,7 @@ public class CategoryMapper {
                 .createdAt(category.getCreatedAt())
                 .updatedAt(category.getUpdatedAt())
                 .imageUrl(category.getImage() != null ? category.getImage().getImagePath() : null)
+                .numberOfItems((long) category.getGarlands().size())
                 .build();
     }
 

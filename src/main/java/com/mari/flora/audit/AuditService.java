@@ -17,8 +17,6 @@ public class AuditService {
 
     private final AuditRepository auditLogRepository;
 
-    // ✅ REQUIRES_NEW: runs in its own transaction, independent of whatever
-    // transaction (if any) is active on the async thread.
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void persist(AuditEvent event) {
         AuditLog logs = AuditLog.builder()

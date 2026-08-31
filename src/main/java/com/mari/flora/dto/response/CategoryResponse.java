@@ -25,4 +25,5 @@ public class CategoryResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String imageUrl;
+    private Long numberOfItems;
 }

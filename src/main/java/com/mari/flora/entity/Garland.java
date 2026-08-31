@@ -3,8 +3,11 @@ package com.mari.flora.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,7 +18,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "garland")
-@Data
+// ✅ FIX: replaced @Data with @Getter/@Setter + explicit equals/hashCode/toString
+// scoped to 'id' only. @Data was including the 'category' back-reference,
+// which is the other half of the circular hashCode chain with Category.
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,6 +32,8 @@ public class Garland {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include // ✅ FIX
+    @ToString.Include // ✅ FIX
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 150)
@@ -41,6 +52,8 @@ public class Garland {
     @Builder.Default
     private Integer orderBy = 0;
 
+    // ✅ FIX: NOT included in equals/hashCode/toString anymore — this was the
+    // other side of the circular reference with Category.garlands.
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", nullable = false, foreignKey = @ForeignKey(name = "fk_garland_category_id"))
     private Category category;
@@ -64,6 +77,7 @@ public class Garland {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "garland_material",

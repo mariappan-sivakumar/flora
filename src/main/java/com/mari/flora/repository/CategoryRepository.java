@@ -9,12 +9,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByName(String name);
 
-    @Query(value = "select * from category c where :name is null or c.name ilike concat('%', :name, '%') order by c.order", nativeQuery = true)
+    @Query(
+            value = "select * from category c where :name is null or c.name ilike concat('%', :name, '%') order by c.order",
+            countQuery = "select count(*) from category c where :name is null or c.name ilike concat('%', :name, '%')",
+            nativeQuery = true
+    )
     Page<Category> findByNameContainingIgnoreCase(@Param("name") String name, Pageable pageable);
 
     @Modifying

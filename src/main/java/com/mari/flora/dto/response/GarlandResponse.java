@@ -30,4 +30,5 @@ public class GarlandResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<String> materials;
+    private String imageUrl;
 }
