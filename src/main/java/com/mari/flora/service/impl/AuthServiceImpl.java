@@ -2,6 +2,7 @@ package com.mari.flora.service.impl;
 
 import com.mari.flora.dto.request.AdminRegistrationDto;
 import com.mari.flora.dto.request.LoginRequest;
+import com.mari.flora.dto.response.UserResponse;
 import com.mari.flora.entity.Role;
 import com.mari.flora.entity.User;
 import com.mari.flora.exception.FunctionalException;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -67,5 +70,12 @@ public class AuthServiceImpl implements AuthService {
         User savedUser=userRepository.save(user);
         log.debug("registerAdmin saved userId={}", savedUser.getId());
         return "User Created Successfully"+savedUser.getId();
+    }
+
+    @Override
+    public List<UserResponse> listUsers(String role) {
+        return userRepository.findByRoles_RoleName(role).stream()
+                .map(user -> new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getIsActive(), user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet())))
+                .toList();
     }
 }

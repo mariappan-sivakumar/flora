@@ -3,6 +3,8 @@ package com.mari.flora.controller;
 import com.mari.flora.dto.request.AdminRegistrationDto;
 import com.mari.flora.dto.request.LoginRequest;
 import com.mari.flora.dto.response.JWTAuthResponse;
+import com.mari.flora.dto.response.ResponseDto;
+import com.mari.flora.dto.response.UserResponse;
 import com.mari.flora.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,10 +12,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -47,5 +48,15 @@ public class AuthController {
         String result = authService.registerAdmin(adminRegistrationDto);
         log.debug("registerAdmin result={}", result);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "List Admins", description = "List all registered admins")
+    @ApiResponse(responseCode = "200", description = "Admins listed successfully")
+    public ResponseDto<List<UserResponse>> listAdmins(@RequestParam(defaultValue = "ROLE_ADMIN") String role) {
+        log.info("listAdmins called");
+        List<UserResponse> admins = authService.listUsers(role);
+        log.debug("listAdmins returned {} admins", admins.size());
+        return ResponseDto.success(admins, "Admins listed successfully");
     }
 }

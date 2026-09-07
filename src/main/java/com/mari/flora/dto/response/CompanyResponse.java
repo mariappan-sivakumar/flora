@@ -31,4 +31,5 @@ public class CompanyResponse {
     private LocalDateTime updatedAt;
     private String heroTitle;
     private List<CompanyKpiResponse> kpis;
+    private String imageUrl;
 }

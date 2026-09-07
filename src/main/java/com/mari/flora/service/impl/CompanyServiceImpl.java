@@ -6,8 +6,10 @@ import com.mari.flora.dto.enums.AuditEntityType;
 import com.mari.flora.dto.request.CompanyRequest;
 import com.mari.flora.dto.response.CompanyResponse;
 import com.mari.flora.entity.Company;
+import com.mari.flora.entity.Image;
 import com.mari.flora.mapper.CompanyMapper;
 import com.mari.flora.repository.CompanyRepository;
+import com.mari.flora.repository.ImageRepository;
 import com.mari.flora.service.CompanyService;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CompanyServiceImpl implements CompanyService{
     private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
+    private final ImageRepository imageRepository;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, CompanyMapper companyMapper, ImageRepository imageRepository) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
+        this.imageRepository = imageRepository;
     }
 
     @Override
@@ -43,6 +47,10 @@ public class CompanyServiceImpl implements CompanyService{
     public String createOrUpdateCompany(CompanyRequest companyRequest) {
         log.info("createOrUpdateCompany called name='{}'", companyRequest.getName());
         Company company = companyMapper.toEntity(companyRequest);
+        Image image = imageRepository.findById(companyRequest.getImageId()).orElse(null);
+        if (image != null) {
+            company.setImage(image);
+        }
         companyRepository.softDeleteAllCompany();
         company.setIsActive(true);
         company.getKpis().clear();

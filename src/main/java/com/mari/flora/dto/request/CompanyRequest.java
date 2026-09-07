@@ -39,7 +39,7 @@ public class CompanyRequest {
     @Pattern(regexp = "^[+]?[0-9]{1,15}$", message = "WhatsApp number must be valid")
     private String whatsapp;
 
-    private Integer imageId;
+    private Long imageId;
 
     private String heroTitle;
 

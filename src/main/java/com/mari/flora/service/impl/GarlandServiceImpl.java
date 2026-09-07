@@ -65,13 +65,17 @@ public class GarlandServiceImpl implements GarlandService {
     public Page<GarlandResponse> getAllGarlands(String search, String productCode, String category, int page, int size, String sortBy, String sortDirection) {
         log.info("getAllGarlands called search={}, productCode={}, category={}, page={}, size={}, sortBy={}, sortDirection={}", search, productCode, category, page, size, sortBy, sortDirection);
 
+        // CHANGED: normalize blank/empty query params to null so "IS NULL" checks in the native query work correctly
+        String normalizedSearch = StringUtils.hasText(search) ? search.trim() : null;
+        String normalizedProductCode = StringUtils.hasText(productCode) ? productCode.trim() : null;
+        String normalizedCategory = StringUtils.hasText(category) ? category.trim() : null;
+
         Pageable pageable = getPageable(page, size, sortBy, sortDirection);
         Page<GarlandResponse> result = garlandRepository
-                .searchGarlands(search, productCode, category, pageable)
+                .searchGarlands(normalizedSearch, normalizedProductCode, normalizedCategory, pageable) // CHANGED: pass normalized values
                 .map(garlandMapper::toResponse);
         log.debug("getAllGarlands returned {} items", result.getNumberOfElements());
         return result;
-
     }
 
     @Override
