@@ -5,6 +5,7 @@ import com.mari.flora.dto.enums.AuditAction;
 import com.mari.flora.dto.enums.AuditEntityType;
 import com.mari.flora.dto.request.CompanyRequest;
 import com.mari.flora.dto.response.CompanyResponse;
+import com.mari.flora.dto.response.DashboardOverviewProjection;
 import com.mari.flora.entity.Company;
 import com.mari.flora.entity.Image;
 import com.mari.flora.mapper.CompanyMapper;
@@ -72,5 +73,13 @@ public class CompanyServiceImpl implements CompanyService{
         companyRepository.softDeleteAllCompany();
         log.debug("clearCompany completed");
         return "Company cleared successfully";
+    }
+
+    @Override
+    public DashboardOverviewProjection getDashboardOverview() {
+        log.info("getDashboardOverview called");
+        DashboardOverviewProjection overview = companyRepository.getDashboardOverview();
+        log.debug("getDashboardOverview result={}", overview);
+        return overview;
     }
 }

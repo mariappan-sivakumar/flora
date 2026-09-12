@@ -40,7 +40,9 @@ public class AuditService {
     }
 
     public Page<AuditLogResponse> getAuditLogs(Long userId, String action, String entityType, Pageable pageable) {
+        log.info("getAuditLogs called userId={}, action={}, entityType={}, page={}, size={}", userId, action, entityType, pageable.getPageNumber(), pageable.getPageSize());
         Page<AuditLog> auditLogs = auditLogRepository.findAll(userId, action, entityType, pageable);
+        log.debug("getAuditLogs returned {} records", auditLogs.getTotalElements());
         return auditLogs.map(auditMapper::toResponse);
     }
 

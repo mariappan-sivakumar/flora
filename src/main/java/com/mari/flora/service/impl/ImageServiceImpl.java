@@ -63,7 +63,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional(readOnly = true)
     public ImageResponseDto getById(Long imageId) {
-        return toDto(findOrThrow(imageId));
+        log.info("getById called imageId={}", imageId);
+        ImageResponseDto response = toDto(findOrThrow(imageId));
+        log.debug("getById result={}", response);
+        return response;
     }
 
     @Override

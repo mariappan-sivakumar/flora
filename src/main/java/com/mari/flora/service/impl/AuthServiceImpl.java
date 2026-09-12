@@ -74,8 +74,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public List<UserResponse> listUsers(String role) {
-        return userRepository.findByRoles_RoleName(role).stream()
+        log.info("listUsers called for role='{}'", role);
+        List<UserResponse> users = userRepository.findByRoles_RoleName(role).stream()
                 .map(user -> new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getIsActive(), user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet())))
                 .toList();
+        log.debug("listUsers returned {} records for role='{}'", users.size(), role);
+        return users;
     }
 }

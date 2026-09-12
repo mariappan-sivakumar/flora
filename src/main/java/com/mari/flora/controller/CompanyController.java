@@ -62,4 +62,14 @@ public class CompanyController {
         companyService.clearCompany();
         log.debug("deleteCompany completed");
         return ResponseEntity.ok(ResponseDto.success("Company deleted successfully", "Company deleted"));    }
+
+    @Operation(summary = "Get dashboard overview", description = "Retrieve the dashboard overview information")
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Dashboard overview returned"), @ApiResponse(responseCode = "500", description = "Internal server error")})
+    @GetMapping("/dashboard")
+    public ResponseEntity<ResponseDto<Object>> getDashboardOverview() {
+        log.info("getDashboardOverview called");
+        Object result = companyService.getDashboardOverview();
+        log.debug("getDashboardOverview result={}", result);
+        return ResponseEntity.ok(ResponseDto.success(result, "Dashboard overview returned"));
+    }
 }
