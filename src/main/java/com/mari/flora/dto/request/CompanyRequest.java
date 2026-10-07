@@ -58,4 +58,7 @@ public class CompanyRequest {
     @Valid
     @Builder.Default
     private List<CompanyKpiRequest> kpis = new ArrayList<>();
+
+    @Schema(description = "Image record ID used as hero image for the company profile", example = "43")
+    private Long heroImageId;
 }

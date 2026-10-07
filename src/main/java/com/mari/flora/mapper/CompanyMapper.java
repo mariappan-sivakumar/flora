@@ -35,6 +35,7 @@ public class CompanyMapper {
                 .updatedAt(company.getUpdatedAt())
                 .heroTitle(company.getHeroTitle())
                 .imageUrl(company.getImage() != null ? company.getImage().getImagePath() : null)
+                .heroImageUrl(company.getHeroImage() != null ? company.getHeroImage().getImagePath() : null)
                 // ---- ADDED: active KPIs only, ordered by orderBy ----
                 .kpis(mapKpisToResponse(company.getKpis()))
                 .build();

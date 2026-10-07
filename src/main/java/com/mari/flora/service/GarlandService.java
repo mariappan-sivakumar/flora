@@ -6,12 +6,16 @@ import com.mari.flora.dto.response.GarlandResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface GarlandService {
-    Page<GarlandResponse> getAllGarlands(String search, String productCode, String category, int page, int size, String sortBy, String sortDirection);
+    Page<GarlandResponse> getAllGarlands(String search, String productCode, String category, String[] flower, Long minPrice, Long maxPrice, Boolean active, int page, int size, String sortBy, String sortDirection);
     Page<GarlandResponse> getGarlandsByCategory(String categoryName, int page, int size, String sortBy, String sortDirection);
     GarlandResponse getGarlandByProductCode(String productCode);
     String createGarland(GarlandRequest garland);
     String updateGarland(GarlandRequest garland);
     String deleteGarlandByProductCode(String productCode);
     GarlandBulkUploadResponse bulkUploadGarlands(Long categoryId, MultipartFile file);
+
+    List<String> getAllFlowers();
 }

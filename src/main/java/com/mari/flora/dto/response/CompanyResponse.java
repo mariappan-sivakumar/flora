@@ -48,4 +48,6 @@ public class CompanyResponse {
     private List<CompanyKpiResponse> kpis;
     @Schema(description = "Public image URL for the company profile image", example = "https://cdn.example.com/company.jpg")
     private String imageUrl;
+    @Schema(description = "Public image URL for the company hero image", example = "https://cdn.example.com/hero.jpg")
+    private String heroImageUrl;
 }

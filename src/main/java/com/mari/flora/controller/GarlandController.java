@@ -22,6 +22,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/garland")
 @Tag(name = "Garland", description = "APIs for managing garlands")
@@ -39,12 +41,16 @@ public class GarlandController {
     public ResponseEntity<ResponseDto<Page<GarlandResponse>>> getGarlands(@RequestParam(required = false) String search,
                                                                          @RequestParam(required = false) String productCode,
                                                                          @RequestParam(required = false) String category,
+                                                                         @RequestParam(required = false) String[] flower,
+                                                                         @RequestParam(required = false) Long minPrice,
+                                                                         @RequestParam(required = false) Long maxPrice,
+                                                                         @RequestParam(required = false) Boolean active,
                                                                          @RequestParam(defaultValue = "0") int page,
                                                                          @RequestParam(defaultValue = "10") int size,
                                                                          @RequestParam(defaultValue = "name") String sortBy,
                                                                          @RequestParam(defaultValue = "asc") String sortDirection) {
-        log.info("getGarlands called search={}, productCode={}, category={}, page={}, size={}, sortBy={}, sortDirection={}", search, productCode, category, page, size, sortBy, sortDirection);
-        Page<GarlandResponse> result = garlandService.getAllGarlands(search, productCode, category, page, size, sortBy, sortDirection);
+        log.info("getGarlands called search={}, productCode={}, category={}, flower={}, minPrice={}, maxPrice={}, active={}, page={}, size={}, sortBy={}, sortDirection={}", search, productCode, category, flower, minPrice, maxPrice, active, page, size, sortBy, sortDirection);
+        Page<GarlandResponse> result = garlandService.getAllGarlands(search, productCode, category, flower, minPrice, maxPrice, active, page, size, sortBy, sortDirection);
         log.debug("getGarlands result={}", result);
         return ResponseEntity.ok(ResponseDto.success(result));
 
@@ -136,5 +142,15 @@ public class GarlandController {
                 categoryId, response.getTotalRows(), response.getSuccessCount(), response.getFailureCount());
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/flowers_list")
+    @Operation(summary = "Get all flowers", description = "Retrieve list of all flowers")
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "List returned"), @ApiResponse(responseCode = "500", description = "Internal server error")})
+    public ResponseEntity<ResponseDto<List<String>>> getAllFlowers() {
+        log.info("getAllFlowers called");
+        List<String> result = garlandService.getAllFlowers();
+        log.debug("getAllFlowers result={}", result);
+        return ResponseEntity.ok(ResponseDto.success(result));
     }
 }

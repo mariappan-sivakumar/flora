@@ -64,6 +64,10 @@ public class Company {
     @Column(name = "hero_title", length = 255)
     private String heroTitle;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hero_image_id", foreignKey = @ForeignKey(name = "fk_company_hero_image_id"))
+    private Image heroImage;
+
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("orderBy ASC")
     @Builder.Default
